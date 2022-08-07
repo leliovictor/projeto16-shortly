@@ -15,5 +15,6 @@ urlsRouter.post(
   middleware.getUser,
   controller.postUrlsShorten
 );
+urlsRouter.get("/urls/:id", middleware.checkUrlId, controller.getUrl);
 
 export default urlsRouter;

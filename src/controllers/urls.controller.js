@@ -21,3 +21,9 @@ export async function postUrlsShorten(_req, res) {
     return res.sendStatus(500);
   }
 }
+
+export async function getUrl(_req, res) {
+  const { url: body } = res.locals;
+
+  return res.status(200).send(body);
+}

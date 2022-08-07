@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 
 import { globalRepository } from "../repositories/global.repository.js";
+import { urlsRepository } from "../repositories/urls.repository.js";
 
 export async function checkAuthentication(req, res, next) {
   const { authorization } = req.headers;
@@ -27,6 +28,21 @@ export async function getUser(_req, res, next) {
     if (user.rowCount !== 1) return res.status(404).send("User not found");
 
     res.locals.user = user.rows[0];
+  } catch (err) {
+    return res.sendStatus(500);
+  }
+
+  next();
+}
+
+export async function checkUrlId(req, res, next) {
+    const {id} = req.params;
+
+  try {
+    const url = await urlsRepository.getUrlById(id);
+    if(url.rowCount === 0) return res.status(404).send("Url not found");
+
+    res.locals.url = url.rows[0];
   } catch (err) {
     return res.sendStatus(500);
   }
