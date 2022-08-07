@@ -33,3 +33,14 @@ export async function redirectPageToUrl(_req, res) {
 
   return res.status(302).redirect(pageUrl);
 }
+
+export async function deleteUrl(_req, res) {
+  const { id } = res.locals;
+  console.log(id);
+  try {
+    await urlsRepository.deleteUrlById(id);
+    return res.sendStatus(204);
+  } catch (err) {
+    return res.sendStatus(500);
+  }
+}

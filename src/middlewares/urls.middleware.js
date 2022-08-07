@@ -86,3 +86,28 @@ export async function changeProtocolUrl(_req, res, next) {
     res.locals.pageUrl = url;
     next();
 }
+
+export async function getUrlById(req, res, next) {
+  const {id} = req.params;
+
+  try{
+    const urlJoin = await urlsRepository.selectUrlEmailByUrlId(id);
+
+    if(urlJoin.rowCount === 0) return res.status(404).send("Url not found");
+    res.locals.url = urlJoin.rows[0];
+    res.locals.id = id;
+  } catch(err) {
+    return res.sendStatus(500);
+  }
+
+  next();
+}
+
+export async function compareUserEmail(_req, res, next) {
+  const { email:userEmail } = res.locals.data;
+  const {email: urLEmail} = res.locals.url;
+
+  if(userEmail !== urLEmail) return res.sendStatus(401);
+
+  next();
+}

@@ -23,5 +23,12 @@ urlsRouter.get(
   middleware.changeProtocolUrl,
   controller.redirectPageToUrl
 );
+urlsRouter.delete(
+  "/urls/:id",
+  middleware.checkAuthentication,
+  middleware.getUrlById,
+  middleware.compareUserEmail,
+  controller.deleteUrl
+);
 
 export default urlsRouter;
