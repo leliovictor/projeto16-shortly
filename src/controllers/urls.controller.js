@@ -27,3 +27,9 @@ export async function getUrl(_req, res) {
 
   return res.status(200).send(body);
 }
+
+export async function redirectPageToUrl(_req, res) {
+  const { pageUrl } = res.locals;
+
+  return res.status(302).redirect(pageUrl);
+}

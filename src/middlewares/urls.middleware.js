@@ -35,12 +35,12 @@ export async function getUser(_req, res, next) {
   next();
 }
 
-export async function checkUrlId(req, res, next) {
-    const {id} = req.params;
+export async function checkUrlById(req, res, next) {
+  const { id } = req.params;
 
   try {
-    const url = await urlsRepository.getUrlById(id);
-    if(url.rowCount === 0) return res.status(404).send("Url not found");
+    const url = await urlsRepository.selectUrlById(id);
+    if (url.rowCount === 0) return res.status(404).send("Url not found");
 
     res.locals.url = url.rows[0];
   } catch (err) {
@@ -48,4 +48,41 @@ export async function checkUrlId(req, res, next) {
   }
 
   next();
+}
+
+export async function checkUrlByShortUrl(req, res, next) {
+  const { shortUrl } = req.params;
+
+  try {
+    const url = await urlsRepository.selectUrlByShortUrl(shortUrl);
+    if (url.rowCount === 0) return res.status(404).send("Url not found");
+    res.locals.url = url.rows[0];
+  } catch (err) {
+    return res.sendStatus(500);
+  }
+
+  next();
+}
+
+export async function increaseUrlVisitCount(_req, res, next) {
+  const { id, visitCount } = res.locals.url;
+  
+  try {
+    const increaseOne = visitCount + 1;
+    await urlsRepository.updateUrlVisitCountByOne(id, increaseOne);
+  } catch (err) {
+    return res.sendStatus(500);
+  }
+  next();
+}
+
+export async function changeProtocolUrl(_req, res, next) {
+    let { url } = res.locals.url;
+
+    if(url.slice(0,4) !== "http") {
+        url = `https://${url}`;
+    };
+    
+    res.locals.pageUrl = url;
+    next();
 }

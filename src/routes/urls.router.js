@@ -15,6 +15,13 @@ urlsRouter.post(
   middleware.getUser,
   controller.postUrlsShorten
 );
-urlsRouter.get("/urls/:id", middleware.checkUrlId, controller.getUrl);
+urlsRouter.get("/urls/:id", middleware.checkUrlById, controller.getUrl);
+urlsRouter.get(
+  "/urls/open/:shortUrl",
+  middleware.checkUrlByShortUrl,
+  middleware.increaseUrlVisitCount,
+  middleware.changeProtocolUrl,
+  controller.redirectPageToUrl
+);
 
 export default urlsRouter;
