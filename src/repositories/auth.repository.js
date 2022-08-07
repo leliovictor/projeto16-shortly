@@ -16,7 +16,7 @@ async function insertUserAtUsers(name, email, passwordCript) {
     return connection.query(query, values);
 }
 
-export const authRepositories = {
+export const authRepository = {
     selectUserByEmail,
     insertUserAtUsers
 };

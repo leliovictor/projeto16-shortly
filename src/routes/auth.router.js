@@ -15,4 +15,12 @@ authRouter.post(
   controller.postSignUp
 );
 
+authRouter.post(
+    "/signin",
+    validateSchemaMiddleware(schema.signIn),
+    middleware.checkEmail,
+    middleware.checkPassword,
+    controller.postSignIn
+);
+
 export default authRouter;

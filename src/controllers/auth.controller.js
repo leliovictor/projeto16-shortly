@@ -1,16 +1,26 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-import { authRepositories } from "../repositories/auth.repository.js";
+import { authRepository } from "../repositories/auth.repository.js";
 
 export async function postSignUp(_req, res) {
-    const { name, email, password } = res.locals.body;
+  const { name, email, password } = res.locals.body;
 
-    const passwordCript = bcrypt.hashSync(password,10);
+  const passwordCript = bcrypt.hashSync(password, 10);
 
-    try {
-        await authRepositories.insertUserAtUsers(name, email, passwordCript);
-        return res.sendStatus(201);
-    } catch (err) {
-        return res.sendStatus(500);
-    }
+  try {
+    await authRepository.insertUserAtUsers(name, email, passwordCript);
+    return res.sendStatus(201);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+}
+
+export async function postSignIn(_req, res) {
+  const TIME_30M = 30 * 60;
+  const secretKey = process.env.JWT_SECRET;
+  const token = jwt.sign({}, secretKey, { expiresIn: TIME_30M });
+
+  return res.status(200).send(token);
 }
