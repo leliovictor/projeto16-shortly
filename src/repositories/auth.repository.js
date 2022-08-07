@@ -1,13 +1,5 @@
 import connection from "../config/db.js";
 
-async function selectUserByEmail(email) { 
-    const query = `SELECT * FROM users WHERE email=$1`;
-    
-    const value = [email];
-    
-    return connection.query(query,value);
-}
-
 async function insertUserAtUsers(name, email, passwordCript) {
     const query = `INSERT INTO users (name, email, "passwordCript") VALUES ($1,$2,$3)`;
 
@@ -17,6 +9,5 @@ async function insertUserAtUsers(name, email, passwordCript) {
 }
 
 export const authRepository = {
-    selectUserByEmail,
     insertUserAtUsers
 };

@@ -1,12 +1,12 @@
 import bcrypt from "bcrypt";
 
-import { authRepository } from "../repositories/auth.repository.js";
+import { globalRepository } from "../repositories/global.repository.js";
 
 export async function checkEmailDuplicate(_req, res, next) {
   const { email } = res.locals.body;
 
   try {
-    const checkDuplicate = await authRepository.selectUserByEmail(email);
+    const checkDuplicate = await globalRepository.selectUserByEmail(email);
     if (checkDuplicate.rowCount !== 0)
       return res.status(409).send("Email already in use");
   } catch (err) {
@@ -19,7 +19,7 @@ export async function checkEmail(_req, res, next) {
   const { email } = res.locals.body;
 
   try {
-    const user = await authRepository.selectUserByEmail(email);
+    const user = await globalRepository.selectUserByEmail(email);
     if (user.rowCount !== 1)
       return res.status(401).send("E-mail or Password incorrect!");
 

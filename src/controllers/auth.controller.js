@@ -18,9 +18,12 @@ export async function postSignUp(_req, res) {
 }
 
 export async function postSignIn(_req, res) {
+  const { email } = res.locals.body;
+
   const TIME_30M = 30 * 60;
   const secretKey = process.env.JWT_SECRET;
-  const token = jwt.sign({}, secretKey, { expiresIn: TIME_30M });
+  const data = {email};
+  const token = jwt.sign(data, secretKey, { expiresIn: TIME_30M });
 
   return res.status(200).send(token);
 }
