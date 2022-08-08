@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { validateSchemaMiddleware } from "../middlewares/schema.middleware.js";
+import { checkAuthentication } from "../middlewares/token.middleware.js";
 
 import * as controller from "../controllers/urls.controller.js";
 import * as middleware from "../middlewares/urls.middleware.js";
@@ -11,7 +12,7 @@ const urlsRouter = Router();
 urlsRouter.post(
   "/urls/shorten",
   validateSchemaMiddleware(schema.urls),
-  middleware.checkAuthentication,
+  checkAuthentication,
   middleware.getUser,
   controller.postUrlsShorten
 );
@@ -25,7 +26,7 @@ urlsRouter.get(
 );
 urlsRouter.delete(
   "/urls/:id",
-  middleware.checkAuthentication,
+  checkAuthentication,
   middleware.getUrlById,
   middleware.compareUserEmail,
   controller.deleteUrl

@@ -36,7 +36,6 @@ export async function redirectPageToUrl(_req, res) {
 
 export async function deleteUrl(_req, res) {
   const { id } = res.locals;
-  console.log(id);
   try {
     await urlsRepository.deleteUrlById(id);
     return res.sendStatus(204);
