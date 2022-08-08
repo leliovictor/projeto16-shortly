@@ -14,18 +14,18 @@ async function selectUserData(email) {
 }
 
 async function selectAllUserUrls(userId) {
-    const query = `
+  const query = `
     SELECT id,"shortUrl",url,"visitCount" 
     FROM urls 
     WHERE "userId"=$1
     ORDER BY id ASC
     `;
-    const value = [userId];
+  const value = [userId];
 
-    return connection.query(query, value);
+  return connection.query(query, value);
 }
 
 export const userRepository = {
   selectUserData,
-  selectAllUserUrls
+  selectAllUserUrls,
 };
